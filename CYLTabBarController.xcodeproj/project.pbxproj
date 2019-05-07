@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2DC5C77422784CE8001E5DB3 /* RTHaoKanRead.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC5C77322784CE8001E5DB3 /* RTHaoKanRead.m */; };
 		56676081F69A826056C45ADD /* Pods_CYLTabBarController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EA6761185EC902A2428DDB4 /* Pods_CYLTabBarController.framework */; };
 		9A1559C81CB6D4D300CAB1AF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1559C61CB6D4D300CAB1AF /* AppDelegate.m */; };
 		9A1559DB1CB6D56500CAB1AF /* CYLHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1559CC1CB6D56500CAB1AF /* CYLHomeViewController.m */; };
@@ -26,6 +27,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2DC5C77222784CE8001E5DB3 /* RTHaoKanRead.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTHaoKanRead.h; sourceTree = "<group>"; };
+		2DC5C77322784CE8001E5DB3 /* RTHaoKanRead.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTHaoKanRead.m; sourceTree = "<group>"; };
 		38052A9140BC7C612AD02E5C /* Pods-CYLTabBarController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CYLTabBarController.release.xcconfig"; path = "Pods/Target Support Files/Pods-CYLTabBarController/Pods-CYLTabBarController.release.xcconfig"; sourceTree = "<group>"; };
 		7EA6761185EC902A2428DDB4 /* Pods_CYLTabBarController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CYLTabBarController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		89D5086598A9EFD751C286DB /* Pods-CYLTabBarController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CYLTabBarController.debug.xcconfig"; path = "Target Support Files/Pods-CYLTabBarController/Pods-CYLTabBarController.debug.xcconfig"; sourceTree = "<group>"; };
@@ -71,6 +74,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2DC5C77122784C9B001E5DB3 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				2DC5C77222784CE8001E5DB3 /* RTHaoKanRead.h */,
+				2DC5C77322784CE8001E5DB3 /* RTHaoKanRead.m */,
+			);
+			path = Api;
+			sourceTree = "<group>";
+		};
 		36A0A7E83F2E6D2B770F8CDA /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,6 +226,7 @@
 		9AE942CF1BDC933E00354519 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2DC5C77122784C9B001E5DB3 /* Api */,
 				9A3865CF22663549008EE46F /* Other */,
 				9A1559C91CB6D56500CAB1AF /* Module */,
 			);
@@ -350,6 +363,7 @@
 				9A7C59902181C39000EDB266 /* MainTabBarController.m in Sources */,
 				9A1559DD1CB6D56500CAB1AF /* CYLMineViewController.m in Sources */,
 				9AE942F11BDC933E00354519 /* main.m in Sources */,
+				2DC5C77422784CE8001E5DB3 /* RTHaoKanRead.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,25 +20,26 @@
     [super viewDidLoad];
     self.title = @"详情页";
     self.view.backgroundColor = [UIColor orangeColor];
-    
-    UILabel *label = [[UILabel alloc] init];
-    label.text = @"点击屏幕可跳转到“我的”，执行testPush";
-    label.frame = CGRectMake(20, 150, CGRectGetWidth(self.view.frame) - 2 * 20, 20);
-    label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    label.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:label];
+  
+}
+
+- (NSDictionary *)requestBodyWithBook_id:(NSString *)book_id {
+    return @{@"book_id":book_id,
+             @"user_id":@"",
+             @"chapter_id":@"0"
+             };
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    // [self cyl_popSelectTabBarChildViewControllerAtIndex:3 completion:^(__kindof UIViewController *selectedTabBarChildViewController) {
-    [self cyl_popSelectTabBarChildViewControllerForClassType:[CYLMineViewController class] completion:^(__kindof UIViewController *selectedTabBarChildViewController) {
-        CYLMineViewController *mineViewController = selectedTabBarChildViewController;
-        @try {
-            [mineViewController testPush];
-        } @catch (NSException *exception) {
-            NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), exception.reason);
-        }
-    }];
+//    // [self cyl_popSelectTabBarChildViewControllerAtIndex:3 completion:^(__kindof UIViewController *selectedTabBarChildViewController) {
+//    [self cyl_popSelectTabBarChildViewControllerForClassType:[CYLMineViewController class] completion:^(__kindof UIViewController *selectedTabBarChildViewController) {
+//        CYLMineViewController *mineViewController = selectedTabBarChildViewController;
+//        @try {
+//            [mineViewController testPush];
+//        } @catch (NSException *exception) {
+//            NSLog(@"🔴类名与方法名：%@（在第%@行），描述：%@", @(__PRETTY_FUNCTION__), @(__LINE__), exception.reason);
+//        }
+//    }];
 }
 
 @end

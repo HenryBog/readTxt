@@ -12,6 +12,8 @@
 #import "MainTabBarController.h"
 #import "CYLMainRootViewController.h"
 
+#import "CYLDetailsViewController.h"
+
 @implementation CYLHomeViewController 
 
 #pragma mark - View lifecycle
@@ -41,62 +43,62 @@
 //    [rootController createNewTabBar];
 //}
 
-//#pragma mark - Methods
-//
-//- (void)configureCell:(UITableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
-//    [[cell textLabel] setText:[NSString stringWithFormat:@"%@ Controller Cell %@", self.tabBarItem.title, @(indexPath.row)]];
-//}
-//
-//#pragma mark - Table view
-//
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    static NSString * CellIdentifier = @"Cell";
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//    if (!cell) {
-//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-//    }
-//    [self configureCell:cell forIndexPath:indexPath];
-//    return cell;
-//}
+#pragma mark - Methods
 
-//#pragma mark - UINavigationControllerDelegate
+- (void)configureCell:(UITableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
+    [[cell textLabel] setText:[NSString stringWithFormat:@"%@ Controller Cell %@", self.tabBarItem.title, @(indexPath.row)]];
+}
+
+#pragma mark - Table view
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString * CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    [self configureCell:cell forIndexPath:indexPath];
+    return cell;
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController
+       didShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animate {
+    if ([navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        if ([navigationController.viewControllers count] == 1) {
+            navigationController.interactivePopGestureRecognizer.enabled = NO;
+        } else {
+            navigationController.interactivePopGestureRecognizer.enabled = YES;
+        }
+    }
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 30;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSNumber *badgeNumber = @(indexPath.row);
+    self.navigationItem.title = [NSString stringWithFormat:@"首页(%@)", badgeNumber]; //sets navigation bar title.
+    
+//    [self.navigationController.tabBarItem setBadgeValue:[NSString stringWithFormat:@"%@", badgeNumber]];
+    
+//    CYLTabBarControllerConfig *tabBarControllerConfig = [[CYLTabBarControllerConfig alloc] init];
+//    CYLTabBarController *tabBarController = tabBarControllerConfig.tabBarController;
+//    tabBarController.delegate = self;
 //
-//- (void)navigationController:(UINavigationController *)navigationController
-//       didShowViewController:(UIViewController *)viewController
-//                    animated:(BOOL)animate {
-//    if ([navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
-//        if ([navigationController.viewControllers count] == 1) {
-//            navigationController.interactivePopGestureRecognizer.enabled = NO;
-//        } else {
-//            navigationController.interactivePopGestureRecognizer.enabled = YES;
-//        }
-//    }
-//}
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    return 30;
-//}
-//
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    NSNumber *badgeNumber = @(indexPath.row);
-//    self.navigationItem.title = [NSString stringWithFormat:@"首页(%@)", badgeNumber]; //sets navigation bar title.
-//    
-////    [self.navigationController.tabBarItem setBadgeValue:[NSString stringWithFormat:@"%@", badgeNumber]];
-//    
-////    CYLTabBarControllerConfig *tabBarControllerConfig = [[CYLTabBarControllerConfig alloc] init];
-////    CYLTabBarController *tabBarController = tabBarControllerConfig.tabBarController;
-////    tabBarController.delegate = self;
-////
-//    [self cyl_showBadgeValue:[NSString stringWithFormat:@"%@", @(indexPath.row)] animationType:CYLBadgeAnimationTypeScale];
-//    [self pushToNewViewController];
-//}
-//
-//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-//    [self pushToNewViewController];
-//}
+    [self cyl_showBadgeValue:[NSString stringWithFormat:@"%@", @(indexPath.row)] animationType:CYLBadgeAnimationTypeScale];
+    [self pushToNewViewController];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self pushToNewViewController];
+}
 
 - (void)pushToNewViewController {
-    CYLBaseViewController *viewController = [CYLBaseViewController new];
+    CYLDetailsViewController *viewController = [CYLDetailsViewController new];
     viewController.view.backgroundColor = [UIColor orangeColor];
     [viewController cyl_setNavigationBarHidden:YES];
     [self.navigationController  pushViewController:viewController animated:YES];
