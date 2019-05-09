@@ -22,26 +22,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"书架";
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"refresh TabBar" style:UIBarButtonItemStylePlain target:self action:@selector(refreshTabBar:)];
 }
-
-//- (void)refreshTabBar:(id)sender {
-//    [self createNewTabBardynamically];
-//}
-
-//- (void)createNewTabBar {
-//    id<UIApplicationDelegate> delegate = ((id<UIApplicationDelegate>)[[UIApplication sharedApplication] delegate]);
-//    UIWindow *window = delegate.window;
-//    CYLMainRootViewController *rootController = (CYLMainRootViewController *)window.rootViewController;
-//    [rootController createNewTabBar];
-//}
-
-//- (void)createNewTabBardynamically {
-//    id<UIApplicationDelegate> delegate = ((id<UIApplicationDelegate>)[[UIApplication sharedApplication] delegate]);
-//    UIWindow *window = delegate.window;
-//    CYLMainRootViewController *rootController = (CYLMainRootViewController *)window.rootViewController;
-//    [rootController createNewTabBar];
-//}
 
 #pragma mark - Methods
 
@@ -82,13 +63,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSNumber *badgeNumber = @(indexPath.row);
     self.navigationItem.title = [NSString stringWithFormat:@"首页(%@)", badgeNumber]; //sets navigation bar title.
-    
-//    [self.navigationController.tabBarItem setBadgeValue:[NSString stringWithFormat:@"%@", badgeNumber]];
-    
-//    CYLTabBarControllerConfig *tabBarControllerConfig = [[CYLTabBarControllerConfig alloc] init];
-//    CYLTabBarController *tabBarController = tabBarControllerConfig.tabBarController;
-//    tabBarController.delegate = self;
-//
     [self cyl_showBadgeValue:[NSString stringWithFormat:@"%@", @(indexPath.row)] animationType:CYLBadgeAnimationTypeScale];
     [self pushToNewViewController];
 }

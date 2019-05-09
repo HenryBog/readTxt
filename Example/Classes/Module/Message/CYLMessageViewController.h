@@ -15,4 +15,7 @@
 
 @interface CYLMessageViewController : CYLBaseTableViewController
 
+@property (nonatomic, copy) NSString *bookId;
+@property (nonatomic, copy) NSString *limit;
+
 @end
