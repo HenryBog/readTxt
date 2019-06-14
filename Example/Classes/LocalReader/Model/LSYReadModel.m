@@ -41,7 +41,6 @@
         _notes = [NSMutableArray array];
         _marks = [NSMutableArray array];
         _record = [[LSYRecordModel alloc] init];
-        _record.chapter = 1;
         _record.chapterModel = [RTBookDirectoryModel modelWithBookModel:model];
         _record.chapterCount = _chapters.count;
         _marksRecord = [NSMutableDictionary dictionary];

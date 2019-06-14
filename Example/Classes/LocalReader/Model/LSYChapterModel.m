@@ -238,6 +238,9 @@
 }
 -(NSString *)stringOfPage:(NSUInteger)index
 {
+    if (index >= _pageArray.count) {
+        return @"出现异常";
+    }
     NSUInteger local = [_pageArray[index] integerValue];
     NSUInteger length;
     if (index<self.pageCount-1) {

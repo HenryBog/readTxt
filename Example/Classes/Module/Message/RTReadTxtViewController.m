@@ -40,7 +40,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self addChildViewController:self.pageViewController];
-    [_pageViewController setViewControllers:@[[self readViewWithChapter:_model.record.chapter page:_model.record.page]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+    [_pageViewController setViewControllers:@[[self readViewWithChapter:_model.record.chapter page:_model.record.page]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
     _chapter = _model.record.chapter;
     _page = _model.record.page;
     [self.view addGestureRecognizer:({
@@ -135,7 +135,7 @@
 #pragma mark - CatalogViewController Delegate
 -(void)catalog:(LSYCatalogViewController *)catalog didSelectChapter:(NSUInteger)chapter page:(NSUInteger)page
 {
-    [_pageViewController setViewControllers:@[[self readViewWithChapter:chapter page:page]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+    [_pageViewController setViewControllers:@[[self readViewWithChapter:chapter page:page]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
     [self updateReadModelWithChapter:chapter page:page];
     [self hiddenCatalog];
     
@@ -206,14 +206,14 @@
 
 -(void)menuViewJumpChapter:(NSUInteger)chapter page:(NSUInteger)page
 {
-    [_pageViewController setViewControllers:@[[self readViewWithChapter:chapter page:page]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    [_pageViewController setViewControllers:@[[self readViewWithChapter:chapter page:page]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
     [self updateReadModelWithChapter:chapter page:page];
 }
 -(void)menuViewFontSize:(LSYBottomMenuView *)bottomMenu
 {
     
     [_model.record.chapterModel updateFont];
-    [_pageViewController setViewControllers:@[[self readViewWithChapter:_model.record.chapter page:(_model.record.page>_model.record.chapterModel.pageCount-1)?_model.record.chapterModel.pageCount-1:_model.record.page]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    [_pageViewController setViewControllers:@[[self readViewWithChapter:_model.record.chapter page:(_model.record.page>_model.record.chapterModel.pageCount-1)?_model.record.chapterModel.pageCount-1:_model.record.page]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
     [self updateReadModelWithChapter:_model.record.chapter page:(_model.record.page>_model.record.chapterModel.pageCount-1)?_model.record.chapterModel.pageCount-1:_model.record.page];
 }
 
@@ -243,61 +243,23 @@
 #pragma mark - Create Read View Controller
 
 -(LSYReadViewController *)readViewWithChapter:(NSUInteger)chapter page:(NSUInteger)page{
-    
-    
     if (_model.record.chapter != chapter) {
         [_model.record.chapterModel updateFont];
-        if (_model.type == ReaderEpub) {
-            if (!_model.chapters[chapter].epubframeRef) {
-                NSString *path = [kDocuments stringByAppendingPathComponent:_model.chapters[chapter].chapterpath];
-                NSString* html = [[NSString alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL fileURLWithPath:path]] encoding:NSUTF8StringEncoding];
-                _model.chapters[chapter].content = [html stringByConvertingHTMLToPlainText];
-                [_model.chapters[chapter] parserEpubToDictionary];
-            }
-            [ _model.chapters[chapter] paginateEpubWithBounds:CGRectMake(0,0, [UIScreen mainScreen].bounds.size.width-LeftSpacing-RightSpacing, [UIScreen mainScreen].bounds.size.height-TopSpacing-BottomSpacing)];
-        }
     }
     _readView = [[LSYReadViewController alloc] init];
     _readView.recordModel = _model.record;
-//    NSLog(@"---%@",[NSURL fileURLWithPath:_model.chapters[chapter].chapterpath]);
-    if (_model.type == ReaderEpub) {
-        _readView.type = ReaderEpub;
-        if (!_model.chapters[chapter].epubframeRef) {
-            NSString *path = [kDocuments stringByAppendingPathComponent:_model.chapters[chapter].chapterpath];
-            NSString* html = [[NSString alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL fileURLWithPath:path]] encoding:NSUTF8StringEncoding];
-            _model.chapters[chapter].content = [html stringByConvertingHTMLToPlainText];
-            [_model.chapters[chapter] parserEpubToDictionary];
-            [_model.chapters[chapter] paginateEpubWithBounds:CGRectMake(0,0, [UIScreen mainScreen].bounds.size.width-LeftSpacing-RightSpacing, [UIScreen mainScreen].bounds.size.height-TopSpacing-BottomSpacing)];
-        }
-        
-        _readView.epubFrameRef = _model.chapters[chapter].epubframeRef[page];
-        _readView.imageArray = _model.chapters[chapter].imageArray;
-        _readView.content = _model.chapters[chapter].content;
-    }
-    else{
-        _readView.type = ReaderTxt;
-        LSYChapterModel *model = [_model.chapters objectOrNilAtIndex:chapter];
-        if (model) {
-            NSString *content = [_model.chapters[chapter] stringOfPage:page];
-            NSString *str = [NSString stringWithFormat:@"_pageChange:%lu \n _page:%lu \n model.pageCount:%lu \n  content:%@", _pageChange,_page,model.pageCount,[content substringToIndex:100]];
-            _readView.content = str;
-        } else {
-            _readView.content = _model.content ;
-        }
+    _readView.type = ReaderTxt;
+    LSYChapterModel *model = [_model.chapters objectOrNilAtIndex:chapter];
+    if (model && model.pageCount > page) {
+        NSString *content = [model stringOfPage:page];
+        NSString *str = [NSString stringWithFormat:@"_pageChange:%lu \n _page:%lu \n model.pageCount:%lu \n  content:%@", _pageChange,_page,model.pageCount,[content substringToIndex:100]];
+        _readView.content = content;
+    } else {
+        _readView.content = _model.content;
     }
     _readView.delegate = self;
     NSLog(@"_readGreate");
-    
     return _readView;
-}
--(void)updateReadModelWithChapter:(NSUInteger)chapter page:(NSUInteger)page
-{
-    _chapter = chapter;
-    _page = page;
-    _model.record.chapterModel = _model.chapters[chapter];
-    _model.record.chapter = chapter;
-    _model.record.page = page;
-    [LSYReadModel updateLocalModel:_model url:_resourceURL];
 }
 #pragma mark - Read View Controller Delegate
 -(void)readViewEndEdit:(LSYReadViewController *)readView
@@ -320,88 +282,91 @@
 }
 #pragma mark -PageViewController DataSource
 //前一个页面
-- (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
-{
-    
+- (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
     _pageChange = _page;
     _chapterChange = _chapter;
-    
-    if (_chapterChange==0 &&_pageChange == 0) {
+    //如果到头部
+    if (_chapterChange == 0 &&_pageChange == 0) {
         return nil;
     }
-    if (_pageChange==0) {
+    if (_pageChange == 0) {
         _chapterChange--;
-        _pageChange = _model.chapters[_chapterChange].pageCount-1;
-    }
-    else{
+        LSYChapterModel *model = [_model.chapters objectOrNilAtIndex:_chapterChange];
+        if (model) {
+            _pageChange = _model.chapters[_chapterChange].pageCount - 1;
+        } else {
+            //可能有潜在崩溃风险   要确定选择上章内容不会为空。
+            _pageChange = 0;
+        }
+    } else {
         _pageChange--;
     }
-    
     return [self readViewWithChapter:_chapterChange page:_pageChange];
     
 }
 //后一个页面
-- (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
-{
-    
-    _pageChange = _page;
-    _chapterChange = _chapter;
-    if (_pageChange == _model.chapters.lastObject.pageCount-1 && _chapterChange == _model.chapters.count-1) {
+- (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
+    //已经到底
+    if (_pageChange == _model.chapters.lastObject.pageCount - 1 && _chapterChange == _model.chapters.count - 1) {
         return nil;
     }
-    if ([_model.chapters objectOrNilAtIndex:_chapterChange] && _pageChange == _model.chapters[_chapterChange].pageCount-1) {
-        _chapterChange++;
-        _pageChange = 0;
+    LSYReadViewController *pageVC = (LSYReadViewController *)viewController;
+    NSUInteger page = pageVC.recordModel.page;
+    NSUInteger chapter = pageVC.recordModel.chapter;
+    //当前章节有内容  当前处于章节最后一页
+    if ( page >= _model.chapters[_chapterChange].pageCount - 1) {
+        chapter++;
+        page = 0;
+    } else {
+        //还没有在章节最后一页
+        page++;
     }
-    else{
-        _pageChange++;
-    }
-    return [self readViewWithChapter:_chapterChange page:_pageChange];
+    return [self readViewWithChapter:chapter page:page];
 }
 #pragma mark -PageViewController Delegate
 //这个方法是在UIPageViewController结束滚动或翻页的时候触发
-- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
-{
-    if (!completed) {
+- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed {
+    if (completed) {
         LSYReadViewController *readView = previousViewControllers.firstObject;
-        _readView = readView;
-        _page = readView.recordModel.page;
-        _chapter = readView.recordModel.chapter;
-    }
-    else{
-        [self updateReadModelWithChapter:_chapter page:_page];
+        if (readView && ![self.readView.content isEqualToString:readView.content]) {
+            [self pageChangeSetting];
+        }
+        [self updateReadModelWithChapter:_chapterChange page:_pageChange];
+        
     }
 }
-//这个方法是UIPageViewController开始滚动或翻页的时候触发
-- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers
-{
-    _chapter = _chapterChange;
-    _page = _pageChange;
+
+- (void)pageChangeSetting {
+    NSString *content = self.readView.content;
+    for (NSInteger i = 0; i < self.readView.recordModel.chapterModel.pageCount; i++) {
+        if ([content isEqualToString:[self.readView.recordModel.chapterModel stringOfPage:i]]) {
+            _pageChange = i;
+        } else {
+            continue;
+        }
+    }
 }
+
+- (void)setPage:(NSUInteger)page {
+    _page = page;
+}
+
+- (void)updateReadModelWithChapter:(NSUInteger)chapter page:(NSUInteger)page {
+    _chapter = chapter;
+    _page = page;
+    _model.record.chapterModel = _model.chapters[chapter];
+    _model.record.chapter = chapter;
+    _model.record.page = page;
+//    [LSYReadModel updateLocalModel:_model url:_resourceURL];
+}
+
 -(void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
     
     _pageViewController.view.frame = self.view.frame;
-    //    _catalogView.frame = CGRectMake(-ViewSize(self.view).width, 0, 2*ViewSize(self.view).width, ViewSize(self.view).height);
     _catalogVC.view.frame = CGRectMake(0, 0, ViewSize(self.view).width-100, ViewSize(self.view).height);
     [_catalogVC reload];
 }
 
-- (void)setPage:(NSUInteger)page {
-    NSLog(@"_page%lu , _page%lu",_page , page);
-    _page = page;
-}
-- (void)setChapter:(NSUInteger)chapter {
-    NSLog(@"_chapter%lu , _chapter%lu",_chapter , chapter);
-    _chapter = chapter;
-}
-- (void)setChapterChange:(NSUInteger)chapterChange {
-    NSLog(@"_chapterChange%lu , _chapterChange%lu",_chapterChange , chapterChange);
-    _chapterChange = chapterChange;
-}
-- (void)setPageChange:(NSUInteger)pageChange {
-    NSLog(@"pageChange%lu , pageChange%lu",_pageChange , pageChange);
-    _pageChange = pageChange;
-}
 @end

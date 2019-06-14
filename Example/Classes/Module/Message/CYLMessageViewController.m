@@ -29,6 +29,10 @@
 @implementation CYLMessageViewController
 
 #pragma mark - View lifecycle
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    NSLog(@"%@",NSHomeDirectory());
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -103,13 +107,12 @@
         __strong typeof(self)self = weakSelf;
         NSLog(@"%@",model.bookDetailModel.content);
         if (model && model.bookDetailModel && model.bookDetailModel.content > 0) {
-            if (self.count == 1) {
-                [weakSelf redBookWithModel:model];
-            }
-            self.count += 1;
-            if (model.book_id && model.bookDetailModel.nextChapter_id && self.count < 30) {
-                [self loadBookDetailReadWithBookid:model.book_id chapter_id:model.bookDetailModel.nextChapter_id];
-            }
+            
+            [weakSelf redBookWithModel:model];
+//            self.count += 1;
+//            if (model.book_id && model.bookDetailModel.nextChapter_id && self.count < 30) {
+//                [self loadBookDetailReadWithBookid:model.book_id chapter_id:model.bookDetailModel.nextChapter_id];
+//            }
         }
     }];
 }
