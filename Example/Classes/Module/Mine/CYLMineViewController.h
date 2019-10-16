@@ -12,8 +12,9 @@
 #else
 #import "CYLTabBarController.h"
 #endif
+#import "BaseViewController.h"
 
-@interface CYLMineViewController : CYLBaseViewController
+@interface CYLMineViewController : BaseViewController
 
 - (void)testPush;
 

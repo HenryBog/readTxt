@@ -18,12 +18,12 @@
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [self modelEncodeWithCoder:aCoder];
+    [self yy_modelEncodeWithCoder:aCoder];
 }
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super init];
-    return [self modelInitWithCoder:aDecoder];
+    return [self yy_modelInitWithCoder:aDecoder];
 }
 
 @end

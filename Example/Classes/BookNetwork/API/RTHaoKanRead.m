@@ -35,9 +35,9 @@ static NSString *RTBookDirectory = @"/book/directory";
             block(nil, error);
             return ;
         } else {
-            RTDataModel *dataModel = [RTDataModel modelWithJSON:data];
+            RTDataModel *dataModel = [RTDataModel yy_modelWithJSON:data];
             if (dataModel && dataModel.code.integerValue == 200) {
-                RTBookDetailModel *model = [RTBookDetailModel modelWithJSON:dataModel.data];
+                RTBookDetailModel *model = [RTBookDetailModel yy_modelWithJSON:dataModel.data];
                 if ([dataModel.extra containsObjectForKey:@"pre"]) {
                     model.lastChapter_id = [dataModel.extra stringValueForKey:@"pre" default:@""];
                 }
@@ -74,9 +74,9 @@ static NSString *RTBookDirectory = @"/book/directory";
             block(nil, error);
             return ;
         } else {
-            RTDataModel *dataModel = [RTDataModel modelWithJSON:data];
+            RTDataModel *dataModel = [RTDataModel yy_modelWithJSON:data];
             if (dataModel && dataModel.code.integerValue == 200) {
-                NSArray *list = [NSArray modelArrayWithClass:[RTBookDirectoryModel class] json:dataModel.data];
+                NSArray *list = [NSArray yy_modelArrayWithClass:[RTBookDirectoryModel class] json:dataModel.data];
                 if (list.count > 0) {
                     RTBookDirectoryModel *model = list.firstObject;
                     model.count = [dataModel.extra stringValueForKey:@"count" default:@"0"];

@@ -11,7 +11,25 @@ target 'CYLTabBarController' do
 pod 'CYLTabBarController/Lottie', '~> 1.24.1' # 依赖Lottie库
 pod 'YTKNetwork', '~>2.0.4'
 pod 'Masonry', '~>1.1.0'
-pod 'YYKit',                    '~> 1.0.9'
 pod 'MJRefresh', '~>3.1.16'
+pod 'YYText'
+  pod 'YYCategories'
+pod 'YYModel'
+  pod 'UITableView+FDTemplateLayoutCell'
+  pod 'SDWebImage'
+  pod 'SDWebImage/GIF'
+  
+  pod 'ReactiveObjC'
+  
+  pod 'MBProgressHUD'
+  
+  pod 'FDFullscreenPopGesture'
+  
+  pod 'WMPageController'
+  
+  pod 'TTGTagCollectionView'
+  
+  #微信数据库
+  pod 'WCDB'
 
 end

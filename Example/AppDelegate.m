@@ -16,6 +16,7 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    _statusBarHeight = STATUS_BAR_HEIGHT;
     [UIApplication sharedApplication].statusBarHidden = NO;
     // 设置主窗口,并设置根控制器
     self.window = [[UIWindow alloc]init];
@@ -24,9 +25,18 @@
     CYLMainRootViewController *rootViewController = [[CYLMainRootViewController alloc] init];
     [self.window setRootViewController:rootViewController];
     [self.window makeKeyAndVisible];
+    
     [self setUpNavigationBarAppearance];
     [self customizeInterface];
+    [self setupRequest];
     return YES;
+}
+
+//设置网络
+- (void)setupRequest {
+    YTKNetworkConfig *config = [YTKNetworkConfig sharedConfig];
+    config.baseUrl = SERVERCE_HOST;
+    config.cdnUrl = chapter_URL;
 }
 
 /**
